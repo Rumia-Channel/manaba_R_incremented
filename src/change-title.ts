@@ -22,31 +22,7 @@ const titleRules: [Rule, Title][] = [
   ],
   ["home_coursetable", "ポートフォリオ"],
   [
-    /^course_\d+$/,
-    () => [
-      document.querySelector<HTMLElement>("#coursename")?.innerText,
-      "コース",
-    ],
-  ],
-  [
-    /^course_\d+_.+$/,
-    () => [
-      document.querySelector<HTMLElement>("#coursename")?.innerText,
-      "コース",
-    ],
-  ],
-  //雑に付け足し
-  [
-    /^course_\d+_.+$_query/,
-    () => [
-      "小テスト",
-      document.querySelector<HTMLElement>("#coursename")?.innerText,
-      "コース",
-    ],
-  ],
-  //↓今のところないから構造が分からない
-  [
-    /^course_\d+_.+$_query_.+$/,
+    /^course_\d+_query_.+$/,
     () => [
       "小テスト",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
@@ -54,27 +30,16 @@ const titleRules: [Rule, Title][] = [
     ],
   ],
   [
-    /^course_\d+_.+$_survey/,
+    /^course_\d+_query/,
     () => [
-      "アンケート",
+      "小テスト",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
   ],
   [
-    /^course_\d+_.+$_survey_.+$/,
+    /^course_\d+_survey_\d+_.*/,
     () => [
-      //Xpathでごり押し
-      (document.evaluate("/html/body/div[3]/div[2]/div/div[3]/div/table/tbody/tr[1]/th", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement)?.innerText,
-      "アンケート",
-      document.querySelector<HTMLElement>("#coursename")?.innerText,
-      "コース",
-    ],
-  ],
-  [
-    /^course_\d+_.+$_survey_.+$_.*/,
-    () => [
-      //Xpathでごり押し
       (document.evaluate("/html/body/div[3]/div[2]/div/div[3]/form/div/div/div[3]/table/tbody/tr[1]/th", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement)?.innerText,
       "アンケート",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
@@ -82,33 +47,24 @@ const titleRules: [Rule, Title][] = [
     ],
   ],
   [
-    /^course_\d+_.+$_report/,
+    /^course_\d+_survey_\d+/,
     () => [
-      "レポート",
-      document.querySelector<HTMLElement>("#coursename")?.innerText,
-      "コース",
-    ],
-  ],
-  //↓今のところないから構造が分からない
-  [
-    /^course_\d+_.+$_report_.+$/,
-    () => [
-      "レポート",
+      (document.evaluate("/html/body/div[3]/div[2]/div/div[3]/div/table/tbody/tr[1]/th", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement)?.innerText,
+      "アンケート",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
   ],
   [
-    /^course_\d+_.+$_project/,
+    /^course_\d+_survey/,
     () => [
-      "プロジェクト",
+      "アンケート",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
   ],
-  //↓今のところないから構造が分からない
   [
-    /^course_\d+_.+$_project_.+$/,
+    /^course_\d+_project_.+$/,
     () => [
       "プロジェクト",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
@@ -116,16 +72,39 @@ const titleRules: [Rule, Title][] = [
     ],
   ],
   [
-    /^course_\d+_.+$_grade/,
+    /^course_\d+_project/,
+    () => [
+      "プロジェクト",
+      document.querySelector<HTMLElement>("#coursename")?.innerText,
+      "コース",
+    ],
+  ],
+  [
+    /^course_\d+_report_.+$/,
+    () => [
+      "レポート",
+      document.querySelector<HTMLElement>("#coursename")?.innerText,
+      "コース",
+    ],
+  ],
+  [
+    /^course_\d+_report/,
+    () => [
+      "レポート",
+      document.querySelector<HTMLElement>("#coursename")?.innerText,
+      "コース",
+    ],
+  ],
+  [
+    /^course_\d+_grade_.+$/,
     () => [
       "成績",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
   ],
-  //↓今のところないから構造が分からない
   [
-    /^course_\d+_.+$_grade_.+$/,
+    /^course_\d+_grade/,
     () => [
       "成績",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
@@ -133,18 +112,26 @@ const titleRules: [Rule, Title][] = [
     ],
   ],
   [
-    /^course_\d+_.+$_topics/,
+    /^course_\d+_topics_.+$/,
     () => [
       "掲示板",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
   ],
-  //↓今のところないから構造が分からない
   [
-    /^course_\d+_.+$_topics_.+$/,
+    /^course_\d+_topics/,
     () => [
       "掲示板",
+      document.querySelector<HTMLElement>("#coursename")?.innerText,
+      "コース",
+    ],
+  ],
+  [
+    /^page_.+$/,
+    () => [
+      (document.evaluate("/html/body/div[3]/div[2]/div[3]/div/div/div[1]/div/h1/a", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement)?.innerText,
+      "教材",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
@@ -157,17 +144,20 @@ const titleRules: [Rule, Title][] = [
       "コース",
     ],
   ],
-  //↓今のところないから構造が分からない
   [
-    /page_.+$/,
+    /^course_\d+_.+$/,
     () => [
-      (document.evaluate("/html/body/div[3]/div[2]/div[3]/div/div/div[1]/div/h1/a", document, null, XPathResult.FIRST_ORDERED_NODE_TYPE, null).singleNodeValue as HTMLElement)?.innerText,
-      "教材",
       document.querySelector<HTMLElement>("#coursename")?.innerText,
       "コース",
     ],
   ],
-  //秘伝のタレここまで
+  [
+    /^course_\d+$/,
+    () => [
+      document.querySelector<HTMLElement>("#coursename")?.innerText,
+      "コース",
+    ],
+  ],
   [
     "syllabus__search",
     () => {
